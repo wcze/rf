@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title></title>
 	<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-	<link rel="preload" href="https://raw.githubusercontent.com/cn-cze/cn-cze.github.io/refs/heads/main/header/font.ttf"
+	<link rel="preload" href="font.ttf"
 		as="font" type="font/ttf" crossorigin="anonymous">
 </head>
 
@@ -59,7 +59,7 @@
 	}
 
 
-	const font = new FontFace('CustomFont', 'url(https://raw.githubusercontent.com/cn-cze/cn-cze.github.io/refs/heads/main/header/font.ttf)');
+	const font = new FontFace('CustomFont', 'url(font.ttf)');
 
 	font.load().then(function () {
 		document.querySelector('.loading-message').style.display = 'none';
@@ -71,7 +71,7 @@
 <style type="text/css">
 	@font-face {
 		font-family: font;
-		src: url('https://raw.githubusercontent.com/cn-cze/cn-cze.github.io/refs/heads/main/header/font.ttf') format('truetype');
+		src: url('font.ttf') format('truetype');
 		font-display: swap;
 	}
 
