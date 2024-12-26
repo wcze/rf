@@ -5,12 +5,10 @@
 	<meta charset="utf-8">
 	<title></title>
 	<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-	<link rel="preload" href="font.ttf"
-		as="font" type="font/ttf" crossorigin="anonymous">
+	<link rel='stylesheet' href='https://chinese-fonts-cdn.deno.dev/packages/moon-stars-kai/dist/MoonStarsKai-Bold/result.css' /> 
 </head>
 
 <body>
-	<div class="loading-message">字体加载中...</div>
 	<input type="text" id="text-name" placeholder="请输入名称" value="" />
 	<input type="range" id="text-size" min="15" max="80" value="40">
 	<input type="range" id="text-letterSpacing" min="-15" max="80" value="0">
@@ -24,6 +22,8 @@
 		<p id="text-top-val">0</p>
 	</div>
 	<button id="download" onclick="downImg()">下载</button>
+
+	<div style="margin-top: 50px;">字体：<a href="https://chinese-font.netlify.app/zh-cn/">中文网字计划</a></div>
 </body>
 
 </html>
@@ -57,23 +57,9 @@
 			a.click();
 		});
 	}
-
-
-	const font = new FontFace('CustomFont', 'url(font.ttf)');
-
-	font.load().then(function () {
-		document.querySelector('.loading-message').style.display = 'none';
-	}).catch(function (error) {
-		console.error('Font loading failed', error);
-	});
 </script>
 
 <style type="text/css">
-	@font-face {
-		font-family: font;
-		src: url('font.ttf') format('truetype');
-		font-display: swap;
-	}
 
 	body {
 		display: flex;
@@ -126,7 +112,8 @@
 	}
 
 	#head-text {
-		font-family: font;
+		font-family:'Moon Stars Kai';
+		text-shadow: 1px 1px 0px #cdecff;
 	}
 
 	#__t {
