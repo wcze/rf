@@ -11,6 +11,7 @@
     <title>Team Competition Dart</title>
     <link rel="icon" href="./icon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         table {
             width: 100%;
@@ -78,105 +79,227 @@
         button:hover {
             background-color: #0056b3;
         }
+
+        #dataWeight {
+            width: 100%;
+            border-top: 2px dashed #999;
+            margin-top: 20px;
+        }
+
+        .weightBar {
+            width: 100%;
+            height: 60px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .weightBar>div {
+            padding: 0 20px;
+            height: 100%;
+            text-align: center;
+            color: white;
+            line-height: 60px;
+            min-width: fit-content;
+            display: flex !important;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: width 0.5s ease;
+        }
+
+        .weightBar>div>div {
+            line-height: 1.5em;
+            font-weight: bold;
+        }
+
+        #title-shot {
+            font-size: 36px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
     </style>
 </head>
 
 <body>
-    <table>
-        <thead>
-            <tr>
-                <th width="300">鱼种</th>
-                <th>目标值</th>
-                <th>差异值</th>
-                <th>
-                    <input type="text" value="" placeholder="点击输入ID">
-                </th>
-                <th>
-                    <input type="text" value="" placeholder="点击输入ID">
-                </th>
-                <th>
-                    <input type="text" value="" placeholder="点击输入ID">
-                </th>
-                <th>
-                    <input type="text" value="" placeholder="点击输入ID">
-                </th>
-                <th>
-                    <input type="text" value="" placeholder="点击输入ID">
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    <select class="searchable-select"></select>
-                </td>
-                <td><input type="text" value="" class="targetValue"></td>
-                <td><input type="text" value="" class="varianceValue" disabled></td>
-                <td><input type="text" value="" class="v-1"></td>
-                <td><input type="text" value="" class="v-1"></td>
-                <td><input type="text" value="" class="v-1"></td>
-                <td><input type="text" value="" class="v-1"></td>
-                <td><input type="text" value="" class="v-1"></td>
-            </tr>
-            <tr>
-                <td>
-                    <select class="searchable-select"></select>
-                </td>
-                <td><input type="text" value="" class="targetValue"></td>
-                <td><input type="text" value="" class="varianceValue" disabled></td>
-                <td><input type="text" value="" class="v-2"></td>
-                <td><input type="text" value="" class="v-2"></td>
-                <td><input type="text" value="" class="v-2"></td>
-                <td><input type="text" value="" class="v-2"></td>
-                <td><input type="text" value="" class="v-2"></td>
-            </tr>
-            <tr>
-                <td>
-                    <select class="searchable-select"></select>
-                </td>
-                <td><input type="text" value="" class="targetValue"></td>
-                <td><input type="text" value="" class="varianceValue" disabled></td>
-                <td><input type="text" value="" class="v-3"></td>
-                <td><input type="text" value="" class="v-3"></td>
-                <td><input type="text" value="" class="v-3"></td>
-                <td><input type="text" value="" class="v-3"></td>
-                <td><input type="text" value="" class="v-3"></td>
-            </tr>
-            <tr>
-                <td>
-                    <select class="searchable-select"></select>
-                </td>
-                <td><input type="text" value="" class="targetValue"></td>
-                <td><input type="text" value="" class="varianceValue" disabled></td>
-                <td><input type="text" value="" class="v-4"></td>
-                <td><input type="text" value="" class="v-4"></td>
-                <td><input type="text" value="" class="v-4"></td>
-                <td><input type="text" value="" class="v-4"></td>
-                <td><input type="text" value="" class="v-4"></td>
-            </tr>
-            <tr>
-                <td>
-                    <select class="searchable-select"></select>
-                </td>
-                <td><input type="text" value="" class="targetValue"></td>
-                <td><input type="text" value="" class="varianceValue" disabled></td>
-                <td><input type="text" value="" class="v-5"></td>
-                <td><input type="text" value="" class="v-5"></td>
-                <td><input type="text" value="" class="v-5"></td>
-                <td><input type="text" value="" class="v-5"></td>
-                <td><input type="text" value="" class="v-5"></td>
-            </tr>
-            <tr>
-                <td><center><b>总计</b></center></td>
-                <td><input type="text" value="" class="targetValueSum" disabled></td>
-                <td><input type="text" value="" class="varianceValueSum" disabled></td>
-                <td><button id="clearData">清除数据</button></td>
-            </tr>
-        </tbody>
-    </table>
+    <div id="content">
+        <input type="text" id="title" value="" placeholder="标题"
+            style="width: 100%; font-size: 36px; font-weight: bold; padding: 8px;text-align: center;">
+        <h1 id="title-shot"></h1>
+        <table>
+            <thead>
+                <tr>
+                    <th width="300">鱼种</th>
+                    <th>目标值</th>
+                    <th>差异值</th>
+                    <th>
+                        <input type="text" value="" placeholder="点击输入ID">
+                    </th>
+                    <th>
+                        <input type="text" value="" placeholder="点击输入ID">
+                    </th>
+                    <th>
+                        <input type="text" value="" placeholder="点击输入ID">
+                    </th>
+                    <th>
+                        <input type="text" value="" placeholder="点击输入ID">
+                    </th>
+                    <th>
+                        <input type="text" value="" placeholder="点击输入ID">
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <select class="searchable-select"></select>
+                    </td>
+                    <td><input type="text" value="" class="targetValue"></td>
+                    <td><input type="text" value="" class="varianceValue" disabled></td>
+                    <td><input type="text" value="" class="v-1"></td>
+                    <td><input type="text" value="" class="v-1"></td>
+                    <td><input type="text" value="" class="v-1"></td>
+                    <td><input type="text" value="" class="v-1"></td>
+                    <td><input type="text" value="" class="v-1"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <select class="searchable-select"></select>
+                    </td>
+                    <td><input type="text" value="" class="targetValue"></td>
+                    <td><input type="text" value="" class="varianceValue" disabled></td>
+                    <td><input type="text" value="" class="v-2"></td>
+                    <td><input type="text" value="" class="v-2"></td>
+                    <td><input type="text" value="" class="v-2"></td>
+                    <td><input type="text" value="" class="v-2"></td>
+                    <td><input type="text" value="" class="v-2"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <select class="searchable-select"></select>
+                    </td>
+                    <td><input type="text" value="" class="targetValue"></td>
+                    <td><input type="text" value="" class="varianceValue" disabled></td>
+                    <td><input type="text" value="" class="v-3"></td>
+                    <td><input type="text" value="" class="v-3"></td>
+                    <td><input type="text" value="" class="v-3"></td>
+                    <td><input type="text" value="" class="v-3"></td>
+                    <td><input type="text" value="" class="v-3"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <select class="searchable-select"></select>
+                    </td>
+                    <td><input type="text" value="" class="targetValue"></td>
+                    <td><input type="text" value="" class="varianceValue" disabled></td>
+                    <td><input type="text" value="" class="v-4"></td>
+                    <td><input type="text" value="" class="v-4"></td>
+                    <td><input type="text" value="" class="v-4"></td>
+                    <td><input type="text" value="" class="v-4"></td>
+                    <td><input type="text" value="" class="v-4"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <center><b>总计</b></center>
+                    </td>
+                    <td><input type="text" value="" class="targetValueSum" disabled></td>
+                    <td><input type="text" value="" class="varianceValueSum" disabled></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="margin-top: 20px; text-align: right;">
+        <button id="clearData">🗑 清除数据</button>
+        <button id="screenShot">🖨 页面截图</button>
+    </div>
+
+    <div id="dataWeight" style="display: none;">
+        <h3>目标值权重比：</h3>
+        <div id="dataWeight-weightBar" class="weightBar">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script>
+
+        $('#screenShot').click(function () {
+            $('#title-shot').text($('#title').val());
+            $('#title-shot').show();
+            $('#title').hide();
+            $('#content').css('padding', '20px');
+            setTimeout(() => {
+                html2canvas(document.querySelector('#content')).then((canvas) => {
+                    const imageDataURL = canvas.toDataURL('image/png');
+                    const a = document.createElement('a');
+                    a.href = imageDataURL;
+                    a.download = $('#title').val() + '.png';
+                    a.click();
+                });
+
+                $('#title-shot').hide();
+                $('#title').show();
+                $('#content').css('padding', '0');
+            }, 100);
+        });
+
+        function dataWeight() {
+            if ($('.searchable-select').filter(function () { return this.value; }).length < 4 ||
+                $('.targetValue').filter(function () { return this.value; }).length < 4) {
+                $('#dataWeight').hide();
+                return;
+            }
+            $('#dataWeight').show();
+            dataWeight_weightBar();
+
+
+
+            function dataWeight_weightBar() {
+                let totalWeight = 0;
+                let fishWeights = [];
+
+                $('.searchable-select').each(function (index) {
+                    const fish = $(this).val();
+                    const weight = parseFloat($('.targetValue').eq(index).val());
+                    if (fish && !isNaN(weight)) {
+                        totalWeight += weight;
+                        fishWeights.push({ fish, weight });
+                    }
+                });
+
+                const colors = ['#007bff', '#28a745', '#edb40c', '#dc3545'];
+                $('#dataWeight-weightBar > div').each(function (index) {
+                    const fishWeight = fishWeights[index];
+                    if (fishWeight) {
+                        const percentage = (fishWeight.weight / totalWeight) * 100;
+                        $(this).css({
+                            'width': `${percentage}%`,
+                            'background-color': colors[index % colors.length]
+                        }).html(`
+                        <div>${fishWeight.fish}</div>
+                        <div>${percentage.toFixed(2)} %</div>
+                    `);
+                    } else {
+                        $(this).css({
+                            'width': '0',
+                            'background-color': 'transparent'
+                        }).html('');
+                    }
+                });
+            }
+        }
+
+
+
         function updateSums() {
             let targetSum = 0;
             let varianceSum = 0;
@@ -229,16 +352,57 @@
                             closestInput.css('color', '#2941ff');
                             closestInput.css('font-weight', 'bold');
                         }
-                        $(this).find('.varianceValue').val(closestDifference !== Infinity ? closestDifference : '');
+
+                        $(this).find('.varianceValue').val(closestDifference !== Infinity ? closestDifference : targetValue);
+                    } else {
+                        $(this).find('.varianceValue').val('');
                     }
                 });
             }
 
-            $('input').on('input', updateTable);
-            $('input').on('input', updateSums);
-            $('input').on('input', saveDate);
-            $('select').on('change', saveDate);
+            function saveData() {
+                const data = getInputsAsArray();
+                localStorage.setItem('tableData', data);
+            }
 
+            function getInputsAsArray() {
+                const data = [];
+                const input = [];
+                const select = [];
+                $('input').each(function () {
+                    input.push($(this).val());
+                });
+                $('select').each(function () {
+                    select.push($(this).val());
+                });
+                data.push(input, select);
+                return JSON.stringify(data);
+            }
+
+            function loadData() {
+                const data = JSON.parse(localStorage.getItem('tableData'));
+                if (data) {
+                    const [input, select] = data;
+                    $('input').each(function (index) {
+                        $(this).val(input[index]);
+                    });
+                    $('select').each(function (index) {
+                        $(this).val(select[index]).trigger('change');
+                    });
+                }
+            }
+
+            $('input').on('input', function () {
+                updateTable();
+                updateSums();
+                saveData();
+                dataWeight();
+            });
+
+            $('select').on('change', function () {
+                saveData();
+                dataWeight();
+            });
 
             $('input[class^="v-"]').on('click', function () {
                 this.select();
@@ -246,64 +410,19 @@
                 document.execCommand('selectAll');
             });
 
-
-            function getInputsAsArray() {
-                const data = [];
-                const headerRow = [];
-                $('thead th input').each(function () {
-                    headerRow.push($(this).val());
-                });
-                data.push(headerRow);
-
-                $('tbody tr').each(function () {
-                    const row = [];
-                    row.push($(this).find('select').val());
-                    $(this).find('input').each(function () {
-                        row.push($(this).val());
-                    });
-                    data.push(row);
-                });
-                return JSON.stringify(data);
-            }
-           
-            function saveDate() {
-                const data = getInputsAsArray();
-                localStorage.setItem('tableData', data);
-            }
-
-            function loadData() {
-                const data = localStorage.getItem('tableData');
-                if (data) {
-                    const parsedData = JSON.parse(data);
-                    const headerRow = parsedData[0];
-                    $('thead th input').each(function (index) {
-                        $(this).val(headerRow[index]);
-                    });
-
-                    $('tbody tr').each(function (rowIndex) {
-                        const row = parsedData[rowIndex + 1];
-                        $(this).find('select').val(row[0]).trigger('change');
-                        $(this).find('input').each(function (inputIndex) {
-                            $(this).val(row[inputIndex + 1]);
-                        });
-                    });
-                }
-            }
-
-            loadData();
-            updateTable();
-            updateSums();
-            
-
             $('#clearData').on('click', function () {
-                $('tbody tr').each(function () {
-                    $(this).find('input').not('[placeholder="点击输入ID"]').val('');
+                $('input').each(function () {
+                    $(this).not('[placeholder="点击输入ID"]').val('');
                 });
                 $('.searchable-select').val('').trigger('change');
                 updateTable();
                 updateSums();
-                saveDate();
+                saveData();
             });
+
+            loadData();
+            updateTable();
+            updateSums();
         });
     </script>
 </body>
