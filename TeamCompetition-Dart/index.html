@@ -59,6 +59,24 @@
             border: none !important;
             background: none !important;
         }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 
@@ -151,6 +169,7 @@
                 <td><center><b>总计</b></center></td>
                 <td><input type="text" value="" class="targetValueSum" disabled></td>
                 <td><input type="text" value="" class="varianceValueSum" disabled></td>
+                <td><button id="clearData">清除数据</button></td>
             </tr>
         </tbody>
     </table>
@@ -216,6 +235,8 @@
 
             $('input').on('input', updateTable);
             $('input').on('input', updateSums);
+            $('input').on('input', saveDate);
+            $('select').on('change', saveDate);
 
 
             $('input[class^="v-"]').on('click', function () {
@@ -225,18 +246,62 @@
             });
 
 
-
-            $('th input').each(function (index) {
-                const storedValue = localStorage.getItem(`userID-${index}`);
-                if (storedValue) {
-                    $(this).val(storedValue);
-                }
-            });
-
-            $('th input').on('input', function () {
-                $('th input').each(function (index) {
-                    localStorage.setItem(`userID-${index}`, $(this).val());
+            function getInputsAsArray() {
+                const data = [];
+                const headerRow = [];
+                $('thead th input').each(function () {
+                    headerRow.push($(this).val());
                 });
+                data.push(headerRow);
+
+                $('tbody tr').each(function () {
+                    const row = [];
+                    row.push($(this).find('select').val());
+                    $(this).find('input').each(function () {
+                        row.push($(this).val());
+                    });
+                    data.push(row);
+                });
+                return JSON.stringify(data);
+            }
+           
+            function saveDate() {
+                const data = getInputsAsArray();
+                localStorage.setItem('tableData', data);
+            }
+
+            function loadData() {
+                const data = localStorage.getItem('tableData');
+                if (data) {
+                    const parsedData = JSON.parse(data);
+                    const headerRow = parsedData[0];
+                    $('thead th input').each(function (index) {
+                        $(this).val(headerRow[index]);
+                    });
+
+                    $('tbody tr').each(function (rowIndex) {
+                        const row = parsedData[rowIndex + 1];
+                        $(this).find('select').val(row[0]).trigger('change');
+                        $(this).find('input').each(function (inputIndex) {
+                            $(this).val(row[inputIndex + 1]);
+                        });
+                    });
+                }
+            }
+
+            loadData();
+            updateTable();
+            updateSums();
+            
+
+            $('#clearData').on('click', function () {
+                $('tbody tr').each(function () {
+                    $(this).find('input').not('[placeholder="点击输入ID"]').val('');
+                });
+                $('.searchable-select').val('').trigger('change');
+                updateTable();
+                updateSums();
+                saveDate();
             });
         });
     </script>
