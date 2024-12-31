@@ -79,7 +79,7 @@
             justify-content: space-between;
         }
 
-        button>svg{
+        button>svg {
             margin-right: 5px;
         }
 
@@ -131,15 +131,15 @@
             display: none;
         }
 
-        input{
+        input {
             text-align: center;
         }
 
-        th{
+        th {
             text-align: center;
         }
 
-        .select2-selection__rendered{
+        .select2-selection__rendered {
             text-align: center;
         }
     </style>
@@ -440,13 +440,15 @@
             });
 
             $('#clearData').on('click', function () {
-                $('input').each(function () {
-                    $(this).not('[placeholder="点击输入ID"]').val('');
-                });
-                $('.searchable-select').val('').trigger('change');
-                updateTable();
-                updateSums();
-                saveData();
+                if (confirm('确定要清除所有数据吗？')) {
+                    $('input').each(function () {
+                        $(this).not('[placeholder="点击输入ID"]').val('');
+                    });
+                    $('.searchable-select').val('').trigger('change');
+                    updateTable();
+                    updateSums();
+                    saveData();
+                }
             });
 
             loadData();
