@@ -8,6 +8,8 @@
 	<link rel="preload" href="https://cdn.jsdelivr.net/gh/wcze/rf@master/header/font.ttf"
 		as="font" type="font/ttf" crossorigin="anonymous">
 	<link rel="preload" href="./font.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+	<link rel="preload" href="https://fs-im-kefu.7moor-fs1.com/ly/4d2c3f00-7d4c-11e5-af15-41bf63ae4ea0/1735807352421/font.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+	<link rel="preload" href="https://file.uhsea.com/2501/130d1eddc2e3ae33f81c616ce7df2787RH.ttf" as="font" type="font/ttf" crossorigin="anonymous">
 </head>
 
 <body>
@@ -71,7 +73,9 @@
 
 	Promise.any([
 		loadFont('https://cdn.jsdelivr.net/gh/wcze/rf@master/header/font.ttf'),
-		loadFont('./font.ttf')
+		loadFont('./font.ttf'),
+		loadFont('https://fs-im-kefu.7moor-fs1.com/ly/4d2c3f00-7d4c-11e5-af15-41bf63ae4ea0/1735807352421/font.ttf'),
+		loadFont('https://file.uhsea.com/2501/130d1eddc2e3ae33f81c616ce7df2787RH.ttf'),
 	]).then(() => {
 		document.querySelector('.loading-message').style.display = 'none';
 	}).catch((error) => {
@@ -83,7 +87,9 @@
 	@font-face {
 		font-family: font;
 		src: url('https://cdn.jsdelivr.net/gh/wcze/rf@master/header/font.ttf') format('truetype'),
-			 url('./font.ttf') format('truetype');
+			 url('./font.ttf') format('truetype'),
+			 url('https://fs-im-kefu.7moor-fs1.com/ly/4d2c3f00-7d4c-11e5-af15-41bf63ae4ea0/1735807352421/font.ttf') format('truetype'),
+			 url('https://file.uhsea.com/2501/130d1eddc2e3ae33f81c616ce7df2787RH.ttf') format('truetype');
 		font-display: swap;
 	}
 
