@@ -7,6 +7,7 @@
 	<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 	<link rel="preload" href="https://cdn.jsdelivr.net/gh/wcze/rf@master/header/font.ttf"
 		as="font" type="font/ttf" crossorigin="anonymous">
+	<link rel="preload" href="./font.ttf" as="font" type="font/ttf" crossorigin="anonymous">
 </head>
 
 <body>
@@ -58,12 +59,22 @@
 		});
 	}
 
+	const loadFont = (url) => {
+		return new Promise((resolve, reject) => {
+			const font = new FontFace('CustomFont', `url(${url})`);
+			font.load().then(() => {
+				document.fonts.add(font);
+				resolve();
+			}).catch(reject);
+		});
+	};
 
-	const font = new FontFace('CustomFont', 'url(https://cdn.jsdelivr.net/gh/wcze/rf@master/header/font.ttf)');
-
-	font.load().then(function () {
+	Promise.any([
+		loadFont('https://cdn.jsdelivr.net/gh/wcze/rf@master/header/font.ttf'),
+		loadFont('./font.ttf')
+	]).then(() => {
 		document.querySelector('.loading-message').style.display = 'none';
-	}).catch(function (error) {
+	}).catch((error) => {
 		console.error('Font loading failed', error);
 	});
 </script>
@@ -71,7 +82,8 @@
 <style type="text/css">
 	@font-face {
 		font-family: font;
-		src: url('https://cdn.jsdelivr.net/gh/wcze/rf@master/header/font.ttf') format('truetype');
+		src: url('https://cdn.jsdelivr.net/gh/wcze/rf@master/header/font.ttf') format('truetype'),
+			 url('./font.ttf') format('truetype');
 		font-display: swap;
 	}
 
