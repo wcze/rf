@@ -5,11 +5,6 @@
 	<meta charset="utf-8">
 	<title></title>
 	<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-	<link rel="preload" href="https://cdn.jsdelivr.net/gh/wcze/rf@master/header/font.ttf"
-		as="font" type="font/ttf" crossorigin="anonymous">
-	<link rel="preload" href="./font.ttf" as="font" type="font/ttf" crossorigin="anonymous">
-	<link rel="preload" href="https://fs-im-kefu.7moor-fs1.com/ly/4d2c3f00-7d4c-11e5-af15-41bf63ae4ea0/1735807352421/font.ttf" as="font" type="font/ttf" crossorigin="anonymous">
-	<link rel="preload" href="https://file.uhsea.com/2501/130d1eddc2e3ae33f81c616ce7df2787RH.ttf" as="font" type="font/ttf" crossorigin="anonymous">
 </head>
 
 <body>
@@ -60,39 +55,31 @@
 			a.click();
 		});
 	}
+	const fontUrls = [
+		'https://cdn.jsdelivr.net/gh/wcze/rf@master/header/font.ttf',
+		'./font.ttf',
+		'https://fs-im-kefu.7moor-fs1.com/ly/4d2c3f00-7d4c-11e5-af15-41bf63ae4ea0/1735807352421/font.ttf'
+	];
 
 	const loadFont = (url) => {
-		return new Promise((resolve, reject) => {
-			const font = new FontFace('CustomFont', `url(${url})`);
-			font.load().then(() => {
-				document.fonts.add(font);
-				resolve();
-			}).catch(reject);
-		});
+		return new FontFace('CustomFont', `url(${url})`).load();
 	};
 
-	Promise.any([
-		loadFont('https://cdn.jsdelivr.net/gh/wcze/rf@master/header/font.ttf'),
-		loadFont('./font.ttf'),
-		loadFont('https://fs-im-kefu.7moor-fs1.com/ly/4d2c3f00-7d4c-11e5-af15-41bf63ae4ea0/1735807352421/font.ttf'),
-		loadFont('https://file.uhsea.com/2501/130d1eddc2e3ae33f81c616ce7df2787RH.ttf'),
-	]).then(() => {
-		document.querySelector('.loading-message').style.display = 'none';
-	}).catch((error) => {
-		console.error('Font loading failed', error);
-	});
+	setTimeout(() => {
+		Promise.any(fontUrls.map(loadFont))
+			.then((font) => {
+				document.querySelector('.loading-message').style.display = 'none';
+				document.fonts.add(font);
+				document.getElementById('head-text').style.fontFamily = 'CustomFont';
+				console.log('Font loaded:', font);
+			})
+			.catch((error) => {
+				console.error('Failed to load any font:', error);
+			});
+	}, 100);
 </script>
 
 <style type="text/css">
-	@font-face {
-		font-family: font;
-		src: url('https://cdn.jsdelivr.net/gh/wcze/rf@master/header/font.ttf') format('truetype'),
-			 url('./font.ttf') format('truetype'),
-			 url('https://fs-im-kefu.7moor-fs1.com/ly/4d2c3f00-7d4c-11e5-af15-41bf63ae4ea0/1735807352421/font.ttf') format('truetype'),
-			 url('https://file.uhsea.com/2501/130d1eddc2e3ae33f81c616ce7df2787RH.ttf') format('truetype');
-		font-display: swap;
-	}
-
 	body {
 		display: flex;
 		flex-direction: column;
@@ -143,10 +130,6 @@
 		letter-spacing: 0;
 	}
 
-	#head-text {
-		font-family: font;
-	}
-
 	#__t {
 		display: flex;
 		flex-direction: row;
@@ -183,7 +166,7 @@
 		cursor: not-allowed;
 	}
 
-	.loading-message{
+	.loading-message {
 		color: red;
 		margin: 20px 0;
 		font-weight: bold;
